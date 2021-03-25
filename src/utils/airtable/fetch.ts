@@ -59,6 +59,14 @@ export async function fetchAllPeople(): Promise<Person[]> {
     .filter((p) =>
       p['Discord ID'] && p['Discord ID'][0] && (p['Public Credit - Discord Name'] || p['Public Credit - Other Name'])
     )
+    .reverse()
+    .filter((p) => {
+      if (seenNames.includes(p['Discord ID']![0]!)) return false;
+      seenNames.push(p['Discord ID']![0]!);
+      return true;
+    })
+    .reverse()
+    .filter((p) => p['Credit Name Options'] && p['Credit Name Options'][0] !== 'I do not wish to be credited publicly')
     .map((r): Person => ({
       id: r['Discord ID']![0] || '',
       ...getPreferredName(
@@ -76,12 +84,5 @@ export async function fetchAllPeople(): Promise<Person[]> {
       startDate: r['Activity Start Date (Approx)'],
       endDate: r['Activity End Date (Approx)'],
     }))
-    .reverse()
-    .filter((p) => {
-      if (seenNames.includes(p.id)) return false;
-      seenNames.push(p.id);
-      return true;
-    })
-    .reverse()
     .sort((a, b) => (a.name || a.discord || '') > (b.name || b.discord || '') ? 1 : -1);
 }

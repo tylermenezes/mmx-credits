@@ -1,7 +1,8 @@
 export type CreditNameOption =
   'Only my discord name as typed in the "public credit discord name" section below'
   | 'Only my other name as typed in the "public credit other name" section below'
-  | 'Both my discord name AND my other name';
+  | 'Both my discord name AND my other name'
+  | 'I do not wish to be credited publicly';
 
 export interface Record {
   'Credit Type': string[] | undefined

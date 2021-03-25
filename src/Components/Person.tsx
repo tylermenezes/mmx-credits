@@ -24,7 +24,7 @@ export default function Person({ person, withCredits, ...props }: PersonProps): 
       <Text fontWeight="bold" fontSize="md" textDecoration={person.promotionLink ? 'underline' : undefined}>
         {getDisplayName(person)}
       </Text>
-      {withCredits && person.credits.map((c) => <Credit credit={c} />)}
+      {withCredits && person.credits.map((c) => <Credit key={`${c.team}-${c.subteam}`} credit={c} />)}
     </Box>
   )
 }
