@@ -20,8 +20,10 @@ function getPreferredName(
   discord: string | undefined,
   name: string | undefined
 ): { discord?: string | undefined, name?: string | undefined } {
-  if (!option || option === 'Only my discord name' || !name) { discord };
-  if (option === 'Only my name as typed in the "public credit name" section below') { name };
+  if (!option
+      || option === 'Only my discord name as typed in the "public credit discord name" section below'
+      || !name) return { discord };
+  if (option === 'Only my other name as typed in the "public credit other name" section below') return { name };
   return { discord, name };
 }
 
@@ -49,13 +51,26 @@ function getCredit(str: string): Credit {
 
 export async function fetchAllPeople(): Promise<Person[]> {
   const records = await fetchPages(table.select());
+
+  const seenNames: string[] = [];
+
   return records
     .map((r): Record => <Record><unknown>r.fields)
+    .filter((p) =>
+      p['Discord ID'] && p['Discord ID'][0] && (p['Public Credit - Discord Name'] || p['Public Credit - Other Name'])
+    )
+    .reverse()
+    .filter((p) => {
+      if (seenNames.includes(p['Discord ID']![0])) return false;
+      seenNames.push(p['Discord ID']![0]);
+      return true;
+    })
+    .reverse()
     .map((r): Person => ({
       ...getPreferredName(
-        r['Credit Name Options']? r['Credit Name Options'][0] : undefined,
-        r['Discord ID'] ? r['Discord ID'][0] : undefined,
-        r['Public Credit Name']
+        r['Credit Name Options'],
+        r['Public Credit - Discord Name'],
+        r['Public Credit - Other Name']
       ),
       credits: r['Credit Type']?.map(getCredit) || [],
       cadParts: [
@@ -67,6 +82,5 @@ export async function fetchAllPeople(): Promise<Person[]> {
       startDate: r['Activity Start Date (Approx)'],
       endDate: r['Activity End Date (Approx)'],
     }))
-    .filter((p) => p.credits.length > 0 && (p.name || p.discord))
     .sort((a, b) => (a.name || a.discord || '') > (b.name || b.discord || '') ? 1 : -1);
 }

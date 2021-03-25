@@ -1,7 +1,7 @@
 export type CreditNameOption =
-  'Only my discord name'
-  | 'Only my name as typed in the "public credit name" section below'
-  | 'Both my discord name and public credit name';
+  'Only my discord name as typed in the "public credit discord name" section below'
+  | 'Only my other name as typed in the "public credit other name" section below'
+  | 'Both my discord name AND my other name';
 
 export interface Record {
   'Credit Type': string[] | undefined
@@ -11,7 +11,8 @@ export interface Record {
   'PBS Parts Worked On'?: string | undefined
   'MMX Contributor'?: string | undefined
   'Self-Promotion Link'?: string | undefined
-  'Credit Name Options'?: CreditNameOption[] | undefined
-  'Public Credit Name'?: string | undefined
-  'Discord ID': string[] | undefined
+  'Credit Name Options'?: CreditNameOption | undefined
+  'Public Credit - Other Name'?: string | undefined
+  'Public Credit - Discord Name'?: string | undefined
+  'Discord ID'?: string[] | undefined
 }
