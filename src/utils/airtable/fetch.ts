@@ -85,5 +85,5 @@ export async function fetchAllPeople(): Promise<Person[]> {
       startDate: r['Activity Start Date (Approx)'],
       endDate: r['Activity End Date (Approx)'],
     }))
-    .sort((a, b) => (a.name || a.discord || '') > (b.name || b.discord || '') ? 1 : -1);
+    .sort((a, b) => (a.name || a.discord || '').toUpperCase() > (b.name || b.discord || '').toUpperCase() ? 1 : -1);
 }
