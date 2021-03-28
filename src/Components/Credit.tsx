@@ -13,10 +13,21 @@ export function getDisplayCredit(credit: airtable.Credit): string {
   return credit.team || '';
 }
 
-const COLORS = ['red', 'green', 'blue', 'pink', 'yellow', 'cyan'];
+const COLORS = ['cyan', 'blue', 'orange', 'teal', 'green', 'black', 'purple'];
+const FIXED_COLORS = {
+  'CAD Team': 'cyan',
+  'Idea Vault Organizer Team': 'blue',
+  'Engineering Team': 'orange',
+  'MMX Contributor': 'teal',
+  'Discord Moderator Team': 'green',
+  'Project Lead': 'black',
+  'Subtitles Team': 'purple',
+}
 
 export default function Credit({ credit, ...props }: CreditProps): ReactElement {
-  const color = COLORS[rng.create(credit.team).intBetween(0, COLORS.length - 1)];
+  const color = credit.team in FIXED_COLORS
+    ? FIXED_COLORS[credit.team as keyof typeof FIXED_COLORS]
+    : COLORS[rng.create(credit.team).intBetween(0, COLORS.length - 1)];
 
   return (
     <Text
