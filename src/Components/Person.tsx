@@ -23,7 +23,12 @@ export default function Person({ person, withCredits, ...props }: PersonProps): 
   return (
     <Box d="block" {...props}>
       <Text fontWeight="bold" fontSize="md">
-        {getDisplayName(person)} <LinkPreview href={person.promotionLink} />
+        {getDisplayName(person)}{' '}
+        {[...person.cadParts, ...person.parts].length > 0 && (
+          <Text fontSize="sm" d="inline" color="gray.500">
+            &mdash; {[...person.cadParts, ...person.parts].join(', ')}
+          </Text>
+        )}
       </Text>
       <Box fontSize="sm" color="gray.500">
         {withCredits &&
@@ -32,6 +37,7 @@ export default function Person({ person, withCredits, ...props }: PersonProps): 
             .reduce((prev, cur) => [prev, `, `, cur])
         }
       </Box>
+      <LinkPreview href={person.promotionLink} />
     </Box>
   )
 }

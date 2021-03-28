@@ -6,6 +6,7 @@ import { airtable } from '../utils'
 
 interface CreditProps extends ChakraProps {
   credit: airtable.Credit
+  withColor?: boolean | undefined
 }
 
 export function getDisplayCredit(credit: airtable.Credit): string {
@@ -24,7 +25,7 @@ export const FIXED_COLORS = {
   'Subtitles Team': 'purple',
 }
 
-export default function Credit({ credit, ...props }: CreditProps): ReactElement {
+export default function Credit({ credit, withColor, ...props }: CreditProps): ReactElement {
   const color = credit.team in FIXED_COLORS
     ? FIXED_COLORS[credit.team as keyof typeof FIXED_COLORS]
     : UNSET_COLORS[rng.create(credit.team).intBetween(0, UNSET_COLORS.length - 1)];
@@ -32,7 +33,8 @@ export default function Credit({ credit, ...props }: CreditProps): ReactElement 
   return (
     <Text
       as="span"
-      color={`${color}.700`}
+      {...props}
+      {...(withColor ? { color: `${color}.700` } : {})}
     >
       {getDisplayCredit(credit)}
     </Text>

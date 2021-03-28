@@ -29,11 +29,10 @@ function makeDisplayUrl(url: URL): string {
     if (cleanedHost === 'instagram.com') displayPath = pathParts[0];
     else if ((cleanedHost === 'facebook.com' || cleanedHost === 'fb.com')) displayPath = pathParts[0];
     else if (cleanedHost === 'linkedin.com' && pathParts[1]) displayPath = pathParts.slice(0,2).join('/');
-    else if (cleanedHost === 'youtube.com' && pathParts[0] === 'c') displayPath = pathParts.slice(0,2).join('/');
-    else if (cleanedHost === 'youtube.com' && pathParts[0] !== 'watch') displayPath = `${pathParts[0]}/…`;
+    else displayPath = pathParts.join('/');
   }
 
-  return displayPath ? `${cleanedHost}/${displayPath}` : `${cleanedHost}${pathParts.length > 0 ? '/…' : ''}`;
+  return displayPath ? `${cleanedHost}/${displayPath}` : cleanedHost;
 }
 
 export default function LinkPreview({ href, ...props }: LinkPreviewProps): ReactElement {
@@ -48,11 +47,13 @@ export default function LinkPreview({ href, ...props }: LinkPreviewProps): React
 
   return <Text
     as="a"
-    color="gray.400"
+    color="gray.500"
+    fontSize="sm"
     href={fixedLink}
     target="_blank"
     rel="noopener"
     d="inline-block"
+    textDecoration="underline"
     {...props}
   >
     {display}

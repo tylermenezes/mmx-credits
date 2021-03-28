@@ -16,7 +16,7 @@ export default function People({ people, withCredits, ...props }: PeopleProps): 
         withCredits={withCredits}
         person={p}
         key={p.id}
-        {...(withCredits ? { mb: 4 } : {})}
+        mb={4}
       />)}
     </>
   )

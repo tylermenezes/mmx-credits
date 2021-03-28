@@ -77,10 +77,10 @@ export async function fetchAllPeople(): Promise<Person[]> {
       ),
       credits: r['Credit Type']?.map(getCredit) || [],
       cadParts: [
-        ...r['CAD Team Parts Worked On']?.split("\n").filter(Boolean) || [],
-        ...r['PBS Parts Worked On']?.split("\n").filter(Boolean) || [],
+        ...r['CAD Team Parts Worked On']?.split("\n").map((e) => e.trim()).filter(Boolean) || [],
+        ...r['PBS Parts Worked On']?.split("\n").map((e) => e.trim()).filter(Boolean) || [],
       ],
-      parts: r['MMX Contributor']?.split("\n").filter(Boolean) || [],
+      parts: r['MMX Contributor']?.split("\n").map((e) => e.trim()).filter(Boolean) || [],
       promotionLink: r['Self-Promotion Link'],
       startDate: r['Activity Start Date (Approx)'],
       endDate: r['Activity End Date (Approx)'],
