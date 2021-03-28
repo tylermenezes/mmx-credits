@@ -132,6 +132,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@bencevans/color-array-average@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@bencevans/color-array-average/-/color-array-average-1.0.1.tgz#ae3e7cc5aa4647f2f0fc7395e7d24b3c02780e3c"
+  integrity sha512-auELaUrdijKJQ5V8zTSCgtBOY0rZUDwS68dxTokTa57fYfvw7sIRJzQoC7A0eeq54UvHeNCztWiYGrM6bjk9jg==
+
 "@chakra-ui/accordion@1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@chakra-ui/accordion/-/accordion-1.1.2.tgz#b45a44746276100601a39f88e3a5e150a2232294"
