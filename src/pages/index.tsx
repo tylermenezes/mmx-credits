@@ -21,14 +21,14 @@ export default function Index({ people }: IndexProps): ReactElement {
 
   return (
     <Page title="Credits">
-      <Box textAlign="center" mb={8}>
+      <Box mb={8}>
         <Button onClick={toggleGroupTeams}>{groupTeams ? 'Show by Person' : 'Show by Team'}</Button>
       </Box>
 
       {groupTeams ? (
         peopleToTeams(currentPeople).map((team) => (
           <Box key={team.name} mb={8}>
-            <Text fontSize="2xl" fontWeight="bold" mb={4} textAlign="center">{team.name}</Text>
+            <Text fontSize="2xl" fontWeight="bold" mb={4}>{team.name}</Text>
             <People people={team.people} />
           </Box>
         ))

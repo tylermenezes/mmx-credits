@@ -11,13 +11,13 @@ interface PeopleProps extends ChakraProps {
 
 export default function People({ people, withCredits, ...props }: PeopleProps): ReactElement {
   return (
-    <Grid
-      templateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }}
-      gap={4}
-      justifyItems="center"
-      {...props}
-    >
-      {people.map((p) => <Person withCredits={withCredits} person={p} key={p.id} />)}
-    </Grid>
+    <>
+      {people.map((p) => <Person
+        withCredits={withCredits}
+        person={p}
+        key={p.id}
+        {...(withCredits ? { mb: 4 } : {})}
+      />)}
+    </>
   )
 }

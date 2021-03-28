@@ -21,14 +21,7 @@ export default function Credit({ credit, ...props }: CreditProps): ReactElement 
   return (
     <Text
       as="span"
-      d="inline-block"
-      bg={`${color}.100`}
       color={`${color}.700`}
-      fontSize="sm"
-      p={1}
-      mr={1}
-      mb={1}
-      rounded="sm"
     >
       {getDisplayCredit(credit)}
     </Text>

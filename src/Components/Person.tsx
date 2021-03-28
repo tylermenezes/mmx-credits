@@ -17,14 +17,20 @@ export function getDisplayName(person: airtable.Person): string {
 export default function Person({ person, withCredits, ...props }: PersonProps): ReactElement {
   return (
     <Box
-      textAlign="center"
+      d="block"
       {...(person.promotionLink ? { as: 'a', href: person.promotionLink, target: '_blank', rel: 'noopener' } : {})}
       {...props}
     >
       <Text fontWeight="bold" fontSize="md" textDecoration={person.promotionLink ? 'underline' : undefined}>
         {getDisplayName(person)}
       </Text>
-      {withCredits && person.credits.map((c) => <Credit key={`${c.team}-${c.subteam}`} credit={c} />)}
+      <Box fontSize="sm" color="gray.500">
+        {withCredits &&
+          person.credits
+            .map<React.ReactNode>((c) => <Credit key={`${c.team}-${c.subteam}`} credit={c} />)
+            .reduce((prev, cur) => [prev, `, `, cur])
+        }
+      </Box>
     </Box>
   )
 }

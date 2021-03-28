@@ -27,7 +27,7 @@ function getPreferredName(
   return { discord, name };
 }
 
-const TITLE_SUBTEAMS = ['PM', 'Manager'];
+const TITLE_SUBTEAMS = ['Team'];
 function getCredit(str: string): Credit {
   const [team, subteam] = str.split(':', 2);
   if (subteam && subteam.trim().length > 0) {
@@ -39,9 +39,10 @@ function getCredit(str: string): Credit {
 
   for (const titleSubteam of TITLE_SUBTEAMS) {
     if (team.includes(` ${titleSubteam}`)) {
+      const [preTeam, postTeam] = team.split(` ${titleSubteam}`, 1);
       return {
-        team: team.split(` ${titleSubteam}`, 1)[0]!,
-        subteam: titleSubteam,
+        team: preTeam + ` Team`,
+        subteam: postTeam,
       };
     }
   }
