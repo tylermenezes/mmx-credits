@@ -24,20 +24,28 @@ export default function Person({ person, withCredits, ...props }: PersonProps): 
     <Box d="block" {...props}>
       <Text fontWeight="bold" fontSize="md">
         {getDisplayName(person)}{' '}
-        {[...person.cadParts, ...person.parts].length > 0 && (
-          <Text fontSize="sm" d="inline" color="gray.500">
-            &mdash; {[...person.cadParts, ...person.parts].join(', ')}
-          </Text>
-        )}
+        <LinkPreview href={person.promotionLink} />
       </Text>
-      <Box fontSize="sm" color="gray.500">
-        {withCredits &&
-          person.credits
-            .map<React.ReactNode>((c) => <Credit key={`${c.team}-${c.subteam}`} credit={c} />)
-            .reduce((prev, cur) => [prev, `, `, cur])
-        }
-      </Box>
-      <LinkPreview href={person.promotionLink} />
+      {withCredits && (
+        <Box fontSize="sm" color="gray.500">
+          <Text as="span" fontWeight="bold">Teams &mdash; </Text>
+          {person.credits
+              .map<React.ReactNode>((c) => <Credit key={`${c.team}-${c.subteam}`} credit={c} />)
+              .reduce((prev, cur) => [prev, `, `, cur])}
+        </Box>
+      )}
+      {person.cadParts.length > 0 && (
+        <Box fontSize="sm" color="gray.500">
+          <Text as="span" fontWeight="bold">CAD Models &mdash; </Text>
+          {person.cadParts.join(', ')}
+        </Box>
+      )}
+      {person.parts.length > 0 && (
+        <Box fontSize="sm" color="gray.500">
+          <Text as="span" fontWeight="bold">MMX Contributions &mdash; </Text>
+          {person.parts.join(', ')}
+        </Box>
+      )}
     </Box>
   )
 }
