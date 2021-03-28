@@ -19,8 +19,8 @@ export default function GraphPage({ people }: IndexProps): ReactElement {
 
   const graph = {
     nodes: [
-      ...teams.map((t) => ({ id: t.name, label: t.name, color: colors.blue[300] })),
-      ...people.map((p) => ({ id: p.id, label: getDisplayName(p), color: colors.gray[100], shape: 'box' })),
+      ...teams.map((t) => ({ id: t.name, label: t.name, color: colors.blue[300], mass: 4 })),
+      ...people.map((p) => ({ id: p.id, label: p.name || p.discord, color: colors.gray[100], shape: 'box', mass: 2 })),
     ],
     edges: people
       .map((person) => person.credits.map((credit) => ({ credit, person })))
@@ -33,7 +33,7 @@ export default function GraphPage({ people }: IndexProps): ReactElement {
       <Box width="100%" height="100%" position="fixed" top={0} bottom={0} left={0} right={0}>
         <Graph
           graph={graph}
-          options={{ edges: { color: colors.black }, physics: { solver: 'repulsion' } }}
+          options={{ edges: { color: colors.black } }}
         />
       </Box>
     </Page>
