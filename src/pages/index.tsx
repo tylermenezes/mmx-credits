@@ -22,7 +22,8 @@ export default function Index({ people }: IndexProps): ReactElement {
   return (
     <Page title="Credits">
       <Box mb={8}>
-        <Button onClick={toggleGroupTeams}>{groupTeams ? 'Show by Person' : 'Show by Team'}</Button>
+        <Button onClick={toggleGroupTeams} mr={4}>{groupTeams ? 'Show by Person' : 'Show by Team'}</Button>
+        <Button as="a" href="/graph" target="_blank" rel="noopener">Map It</Button>
       </Box>
 
       {groupTeams ? (

@@ -74,7 +74,7 @@ export default function GraphPage({ people }: IndexProps): ReactElement {
   };
 
   return (
-    <Page title="Contribution Graph">
+    <Page title="Contribution Map">
       <Box width="100%" height="100%" position="fixed" top={0} bottom={0} left={0} right={0}>
         <Graph
           graph={graph}
