@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@bencevans/color-array-average": "^1.0.1",
-    "@chakra-ui/icons": "^1.0.3",
+    "@chakra-ui/icons": "^1.0.7",
     "@chakra-ui/react": "^1.1.4",
     "@chakra-ui/system": "^1.1.5",
     "@emotion/react": "^11.1.4",
