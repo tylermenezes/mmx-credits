@@ -20,6 +20,12 @@ export const theme: ThemeOverride = {
       baseStyle: {
         fontFamily: 'heading'
       },
+      variants: {
+        milkyWay: {
+          backgroundColor: '#a0aec0',
+          color: '#071536',
+        },
+      }
     },
   },
   fonts: {
@@ -28,5 +34,8 @@ export const theme: ThemeOverride = {
   },
   colors: {
     black: '#5b5971',
+    milkyWay: '#071536',
+    milkyWayText: '#a0aec0',
+    milkyWayAlpha: 'rgb(7, 21, 54, 0.9)',
   },
 }

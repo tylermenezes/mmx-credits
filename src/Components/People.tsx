@@ -1,22 +1,21 @@
 import { ReactElement } from 'react';
 import { ChakraProps } from '@chakra-ui/system';
 import { Grid } from '@chakra-ui/react';
-import Person from './Person';
+import Person, { PersonProps } from './Person';
 import { airtable } from '../utils'
 
-interface PeopleProps extends ChakraProps {
+export interface PeopleProps extends Omit<PersonProps, 'person'> {
   people: airtable.Person[],
-  withCredits?: boolean | undefined,
 }
 
-export default function People({ people, withCredits, ...props }: PeopleProps): ReactElement {
+export default function People({ people, ...props }: PeopleProps): ReactElement {
   return (
     <>
       {people.map((p) => <Person
-        withCredits={withCredits}
         person={p}
         key={p.id}
         mb={4}
+        {...props}
       />)}
     </>
   )

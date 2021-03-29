@@ -47,7 +47,6 @@ export default function LinkPreview({ href, ...props }: LinkPreviewProps): React
 
   return <Text
     as="a"
-    color="gray.500"
     fontSize="sm"
     href={fixedLink}
     target="_blank"

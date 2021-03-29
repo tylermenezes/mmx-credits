@@ -9,31 +9,46 @@ import { airtable } from '../utils';
 import peopleToTeams from '../utils/airtable/peopleToTeams';
 import { CustomAppProps } from './_app';
 
-interface IndexProps extends CustomAppProps {
+export interface IndexProps extends CustomAppProps {
   people: airtable.Person[],
+  milkyWay?: 'alpha' | 'solid' | undefined,
 }
 
-export default function Index({ people }: IndexProps): ReactElement {
+export default function Index({ people, milkyWay }: IndexProps): ReactElement {
   const [ groupTeams, toggleGroupTeams ] = useReducer((s) => !s, false);
   const { data, error } = useSwr('/api/credits', (f) => fetch(f).then((r) => r.json()) );
 
   const currentPeople = data ? (data as unknown) as airtable.Person[] : people;
 
   return (
-    <Page title="Credits">
+    <Page title="Credits" milkyWay={milkyWay}>
       <Box mb={8}>
-        <Button onClick={toggleGroupTeams} mr={4}>{groupTeams ? 'Show by Person' : 'Show by Team'}</Button>
-        <Button as="a" href="/graph" target="_blank" rel="noopener">Thousand Arm Octopus Map</Button>
+        <Button
+          variant={milkyWay ? 'milkyWay' : undefined}
+          onClick={toggleGroupTeams}
+          mr={4}
+        >
+          {groupTeams ? 'Show by Person' : 'Show by Team'}
+        </Button>
+        <Button
+          variant={milkyWay ? 'milkyWay' : undefined}
+          as="a"
+          href="/graph"
+          target="_blank"
+          rel="noopener"
+        >
+          Thousand-Armed Octopus Map
+        </Button>
       </Box>
 
       {groupTeams ? (
         peopleToTeams(currentPeople).map((team) => (
           <Box key={team.name} mb={8}>
             <Text fontSize="2xl" fontWeight="bold" mb={4}>{team.name}</Text>
-            <People people={team.people} />
+            <People milkyWay={!!milkyWay} withStar={!!milkyWay} people={team.people} />
           </Box>
         ))
-      ) : <People withCredits people={currentPeople} />}
+      ) : <People milkyWay={!!milkyWay} withStar={!!milkyWay} withCredits people={currentPeople} />}
     </Page>
   );
 }
