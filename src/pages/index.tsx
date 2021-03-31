@@ -15,7 +15,7 @@ export interface IndexProps extends CustomAppProps {
 }
 
 export default function Index({ people, milkyWay }: IndexProps): ReactElement {
-  const [ groupTeams, toggleGroupTeams ] = useReducer((s) => !s, false);
+  const [ groupTeams, toggleGroupTeams ] = useReducer((s) => !s, true);
   const { data, error } = useSwr('/api/credits', (f) => fetch(f).then((r) => r.json()) );
 
   const currentPeople = data ? (data as unknown) as airtable.Person[] : people;
@@ -44,7 +44,7 @@ export default function Index({ people, milkyWay }: IndexProps): ReactElement {
       {groupTeams ? (
         peopleToTeams(currentPeople).map((team) => (
           <Box key={team.name} mb={8}>
-            <Text fontSize="2xl" fontWeight="bold" mb={4}>{team.name}</Text>
+            <Text fontSize="2xl" fontWeight="bold" mb={4} color={milkyWay ? 'white' : 'black'}>{team.name}</Text>
             <People milkyWay={!!milkyWay} withStar={!!milkyWay} people={team.people} />
           </Box>
         ))
