@@ -1,6 +1,14 @@
 import { Person } from './Person';
 import { Team } from './Team';
 
+const TEAM_SORT_OVERRIDES = [
+  'CAD Team',
+  'Engineering Team',
+  'Project Lead',
+  'MMX Contributor',
+  'Idea Vault Organizer Team',
+];
+
 export default function peopleToTeams(people: Person[]): Team[] {
   const teams: Team[] = [];
   people
@@ -13,7 +21,7 @@ export default function peopleToTeams(people: Person[]): Team[] {
       teams.push(myTeam);
     }
 
-    if (myTeam.people!.filter((p) => p.discord === person.discord).length === 0) {
+    if (myTeam.people!.filter((p) => p.id === person.id).length === 0) {
       myTeam.people!.push(person);
     }
 
@@ -28,5 +36,10 @@ export default function peopleToTeams(people: Person[]): Team[] {
     mySubteam.people!.push(person);
   });
 
-  return teams;
+  return teams.sort((a, b) => {
+    if (!TEAM_SORT_OVERRIDES.includes(a.name) && !TEAM_SORT_OVERRIDES.includes(b.name)) return 0;
+    if (TEAM_SORT_OVERRIDES.includes(a.name) && !TEAM_SORT_OVERRIDES.includes(b.name)) return -1;
+    if (TEAM_SORT_OVERRIDES.includes(b.name) && !TEAM_SORT_OVERRIDES.includes(a.name)) return 1;
+    return TEAM_SORT_OVERRIDES.indexOf(a.name) < TEAM_SORT_OVERRIDES.indexOf(b.name) ? -1 : 1;
+  });
 }
