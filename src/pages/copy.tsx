@@ -21,7 +21,7 @@ export default function Copy({ people }: IndexProps): ReactElement {
           <Text fontWeight="bold">{team.name.toUpperCase()}<br /><br /></Text>
           {team.people.map((person) => (
             <>
-              <Text>► {getDisplayName(person)}</Text>
+              <Text>► {getDisplayName(person, true)}</Text>
               {person.promotionLink && <Text>{person.promotionLink}</Text>}
               <br />
             </>

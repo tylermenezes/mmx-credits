@@ -13,8 +13,8 @@ export interface PersonProps extends ChakraProps {
   withStar?: boolean | undefined,
 }
 
-export function getDisplayName(person: airtable.Person): ReactElement {
-  const discordLogo = <Image src="/discord.svg" d="inline-block" h="1.2em" />;
+export function getDisplayName(person: airtable.Person, textOnly: boolean = false): ReactElement {
+  const discordLogo = textOnly ? <></> : <Image src="/discord.svg" d="inline-block" h="1.2em" />;
   if (person.name && person.discord) return <>{person.name}/{discordLogo}{person.discord}</>;
   if (person.discord) return <>{discordLogo}{person.discord}</>;
   return <>{person.name || ''}</>;
