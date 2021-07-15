@@ -45,10 +45,16 @@ export default function Index({ people, milkyWay }: IndexProps): ReactElement {
         peopleToTeams(currentPeople).map((team) => (
           <Box key={team.name} mb={8}>
             <Text fontSize="2xl" fontWeight="bold" mb={4} color={milkyWay ? 'white' : 'black'}>{team.name}</Text>
-            <People milkyWay={!!milkyWay} withStar={!!milkyWay} people={team.people} />
+            <People
+              milkyWay={!!milkyWay}
+              withStar={!!milkyWay}
+              withCad={team.name === 'CAD Team'}
+              withParts={team.name === 'MMX Contributor'}
+              people={team.people}
+            />
           </Box>
         ))
-      ) : <People milkyWay={!!milkyWay} withStar={!!milkyWay} withCredits people={currentPeople} />}
+      ) : <People withCad withParts milkyWay={!!milkyWay} withStar={!!milkyWay} withCredits people={currentPeople} />}
     </Page>
   );
 }

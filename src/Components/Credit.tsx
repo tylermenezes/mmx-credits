@@ -21,8 +21,11 @@ export const FIXED_COLORS = {
   'Engineering Team': 'orange',
   'MMX Contributor': 'teal',
   'Discord Moderator Team': 'green',
+  'Mod Team': 'green',
   'Project Lead': 'black',
-  'Subtitles Team': 'purple',
+  'Subtitles Team': 'pink',
+  'Wiki Team': 'purple',
+  'Render Team': 'pink',
 }
 
 export default function Credit({ credit, withColor, ...props }: CreditProps): ReactElement {

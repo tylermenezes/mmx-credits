@@ -11,6 +11,8 @@ export interface PersonProps extends ChakraProps {
   milkyWay?: boolean | undefined,
   withCredits?: boolean | undefined,
   withStar?: boolean | undefined,
+  withCad?: boolean | undefined,
+  withParts?: boolean | undefined,
 }
 
 export function getDisplayName(person: airtable.Person, textOnly: boolean = false): ReactElement {
@@ -21,7 +23,7 @@ export function getDisplayName(person: airtable.Person, textOnly: boolean = fals
 }
 
 
-export default function Person({ person, milkyWay, withCredits, withStar, ...props }: PersonProps): ReactElement {
+export default function Person({ person, milkyWay, withCredits, withCad, withParts, withStar, ...props }: PersonProps): ReactElement {
   return (
     <Grid templateColumns="100%" gap={4} alignItems="top">
       <Box d="block" color={milkyWay ? 'milkyWayText' : 'gray.500'} {...props}>
@@ -40,13 +42,13 @@ export default function Person({ person, milkyWay, withCredits, withStar, ...pro
                 .reduce((prev, cur) => [prev, `, `, cur])}
           </Box>
         )}
-        {person.cadParts.length > 0 && (
+        {withCad && person.cadParts.length > 0 && (
           <Box fontSize="sm">
             <Text as="span" fontWeight="bold">CAD Models &mdash; </Text>
             {person.cadParts.join(', ')}
           </Box>
         )}
-        {person.parts.length > 0 && (
+        {withParts && person.parts.length > 0 && (
           <Box fontSize="sm">
             <Text as="span" fontWeight="bold">MMX Contributions &mdash; </Text>
             {person.parts.join(', ')}

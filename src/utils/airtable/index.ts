@@ -4,3 +4,4 @@ export * from './Credit';
 export * from './Person';
 export * from './Record';
 export * from './Team';
+export * from './Mapping';

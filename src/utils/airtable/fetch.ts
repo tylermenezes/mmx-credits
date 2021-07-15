@@ -1,9 +1,10 @@
 import Airtable from 'airtable';
 import config from '../../config';
 import { fetchPages } from './helpers';
-import { Record, CreditNameOption } from './Record';
+import { Record, CreditNameOption, CollaboratorRecord } from './Record';
 import { Person } from './Person';
 import { Credit } from './Credit';
+import { MappingEntry, Mapping } from './Mapping';
 
 Airtable.configure({
   apiKey: config.airtable.apiKey,
@@ -14,6 +15,15 @@ Airtable.configure({
 
 const base = Airtable.base(config.airtable.base);
 const table = base.table(config.airtable.tables.credits);
+const collaboratorsTable = base.table(config.airtable.tables.collaborators);
+const mappingsTable = base.table(config.airtable.tables.mappings);
+
+async function fetchMappings(): Promise<Mapping> {
+  const mappingEntries = await fetchPages(mappingsTable.select());
+  return mappingEntries
+    .map((m, i) => ({ ...(<MappingEntry><unknown>m.fields), i }))
+    .reduce((accum, m) => ({ [m['Discord Role']]: { credit: m.Credit, i: m.i }, ...accum }), {});
+}
 
 function getPreferredName(
   option: CreditNameOption | undefined,
@@ -52,10 +62,29 @@ function getCredit(str: string): Credit {
 
 export async function fetchAllPeople(): Promise<Person[]> {
   const records = await fetchPages(table.select());
+  const missing = await fetchPages(collaboratorsTable.select({
+    view: config.airtable.views.collaborators.missing,
+  }));
+  const roleMappings = await fetchMappings();
+
+  const uncredited = missing
+    .map((r) => <CollaboratorRecord><unknown>r.fields)
+    .filter((r) => r['Discord ID'] && r['Discord Roles'])
+    .map((r): Person => ({
+      id: r['Discord ID'].slice(0, -5),
+      discord: r['Discord ID'].slice(0, -5), // Hide discriminator for privacy
+      cadParts: [],
+      parts: [],
+      credits: (r['Discord Roles'] || [])
+        .map((r) => roleMappings[r] || undefined)
+        .filter(Boolean)
+        .sort((a, b) => a.i > b.i ? -1 : 1)
+        .map((r) => r.credit)
+        .map(getCredit),
+    }));
 
   const seenNames: string[] = [];
-
-  return records
+  const credited = records
     .map((r): Record => <Record><unknown>r.fields)
     .filter((p) =>
       p['Discord ID'] && p['Discord ID'][0] && (p['Public Credit - Discord Name'] || p['Public Credit - Other Name'])
@@ -75,7 +104,12 @@ export async function fetchAllPeople(): Promise<Person[]> {
         r['Public Credit - Discord Name'],
         r['Public Credit - Other Name']
       ),
-      credits: r['Credit Type']?.map(getCredit) || [],
+      credits: (r['Discord Roles'] || [])
+        .map((r) => roleMappings[r] || undefined)
+        .filter(Boolean)
+        .sort((a, b) => a.i > b.i ? -1 : 1)
+        .map((r) => r.credit)
+        .map(getCredit),
       cadParts: [
         ...r['CAD Team Parts Worked On']?.split("\n").map((e) => e.trim()).filter(Boolean) || [],
         ...r['PBS Parts Worked On']?.split("\n").map((e) => e.trim()).filter(Boolean) || [],
@@ -84,6 +118,11 @@ export async function fetchAllPeople(): Promise<Person[]> {
       promotionLink: r['Self-Promotion Link'],
       startDate: r['Activity Start Date (Approx)'],
       endDate: r['Activity End Date (Approx)'],
-    }))
-    .sort((a, b) => (a.name || a.discord || '').toUpperCase() > (b.name || b.discord || '').toUpperCase() ? 1 : -1);
+    }));
+
+    return [...credited, ...uncredited]
+      .filter((r) => r.credits.length > 0)
+      .sort((a, b) => (
+        (a.name || a.discord || '').toUpperCase() > (b.name || b.discord || '').toUpperCase() ? 1 : -1)
+      );
 }
