@@ -17,14 +17,17 @@ export function getDisplayCredit(credit: airtable.Credit): string {
 export const UNSET_COLORS = ['cyan', 'blue', 'orange', 'teal', 'green', 'black', 'purple'];
 export const FIXED_COLORS = {
   'CAD Team': 'cyan',
+  'Post-CAD Team': 'cyan',
   'Idea Vault Organizer Team': 'blue',
+  'Idea Vault Team': 'blue',
   'Engineering Team': 'orange',
   'MMX Contributor': 'teal',
   'Discord Moderator': 'green',
   'Project Lead': 'black',
-  'Subtitles Team': 'pink',
+  'Subtitles Contributor': 'pink',
   'Wiki Team': 'purple',
-  'Render Team': 'pink',
+  'Render Contributor': 'red',
+  'Tester': 'yellow',
 }
 
 export default function Credit({ credit, withColor, ...props }: CreditProps): ReactElement {
